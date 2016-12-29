@@ -17,7 +17,7 @@ module.exports = {
             if (err) {
                 console.log('Error uploading data: ', sucess);
             } else {
-                console.log('succesfully uploaded the json!');
+                console.log('succesfully uploaded the json! - ',data.path);
             }
         });
     },

@@ -22,7 +22,7 @@ module.exports = (URL,callback) => {
 
     }
     Promise.all([exifPromise(), visionAPIPromise()]).then((data) => {
-        callback(data);
+        callback(imageData);
     });
 
 

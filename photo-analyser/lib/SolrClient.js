@@ -6,7 +6,7 @@ module.exports = (imageData) => {
     let exif = imageData.imageInfo.exif || {};
 
     let data = {
-            path: imageData.path,
+            id: imageData.path,
             Make: imageData.imageInfo.image.Make,
             Model: imageData.imageInfo.image.Model,
             XResolution: imageData.imageInfo.image.imageInfoXResolution,
@@ -50,7 +50,7 @@ module.exports = (imageData) => {
         console.log("Fetch GPS info -",error);
     }
 
-    let createdTime = data.DateTimeOriginal || `${new Date().getFullYear()}`;
+    let createdTime = data.DateTimeOriginal || `0`;
 
     data.photoCreatedYear = createdTime.split(':')[0];
 

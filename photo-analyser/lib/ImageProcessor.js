@@ -4,20 +4,19 @@ const awsUtil = require("./AWSUtil.js");
 module.exports = {
     pipe: (URL) => {
         const analiseImage = (URL, callback) => {
-            analyser(URL,callback);
+            analyser(URL, callback);
         };
 
         const indexImage = (imageMetadata) => {
-            if (imageMetadata.imageInfo || !imageMetadata.visionInfo.code) {
-                solrClient(imageMetadata);
-                awsUtil.upload(imageMetadata);
-            }
+            solrClient(imageMetadata);
+            awsUtil.upload(imageMetadata);
+
         };
 
-        awsUtil.checkFileExist(URL,(error,data)=>{
-            if(error){
+        awsUtil.checkFileExist(URL, (error, data) => {
+            if (error) {
                 analiseImage(URL, indexImage);
-            }else{
+            } else {
                 indexImage(JSON.parse(data.Body.toString('utf-8')))
             }
         });
