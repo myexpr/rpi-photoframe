@@ -50,6 +50,10 @@ module.exports = SolrClient => (imageData) => {
         console.log(error);
     }
 
+    let createdTime = data.DateTimeOriginal || `${new Date().getFullYear()}`;
+
+    data.photoCreatedYear = createdTime.split(':')[0];
+
     indexData.push(data);
 
     let options = {

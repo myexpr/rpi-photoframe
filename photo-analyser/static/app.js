@@ -14,11 +14,13 @@ $(document).ready(function () {
         $("#status").toggle();
     }
 
+    let presentYear = new Date().getFullYear();
+
     let loadImages = () => {
         statusToggle();
         $("#status").html("Loading...");
         imageList = [];
-        $.getJSON("http://52.15.136.66:8983/solr/photo-album/select?indent=on&q=*:*&wt=json", (data) => {
+        $.getJSON(`http://52.15.136.66:8983/solr/photo-album/select?facet.query=photoCreatedYear:[${presentYear-1} TO ${presentYear}]&facet=on&indent=on&q=*:*&wt=json`, (data) => {
             data.response.docs.forEach(doc => {
                 if (doc.path) {
                     imageList.push(doc.path[0]);
