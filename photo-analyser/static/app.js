@@ -22,8 +22,8 @@ $(document).ready(function () {
         imageList = [];
         $.getJSON(`http://52.15.136.66:8983/solr/photo-album/select?facet.query=photoCreatedYear:[${presentYear-1} TO ${presentYear}]&facet=on&indent=on&q=*:*&wt=json`, (data) => {
             data.response.docs.forEach(doc => {
-                if (doc.path) {
-                    imageList.push(doc.path[0]);
+                if (doc.id) {
+                    imageList.push(doc.id);
                 }
             })
         }).fail(() => {
