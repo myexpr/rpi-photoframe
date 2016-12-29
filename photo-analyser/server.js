@@ -1,5 +1,5 @@
 const express = require('express');
-const analyser = require("./lib/ImageAnalyser.js")();
+const imageProcessor = require("./lib/ImageProcessor.js");
 const config = require('./Config.js');
 
 const app = express();
@@ -13,7 +13,7 @@ app.post('/analyse', (req, res) => {
         if (isSupportedFileTye(URL, req.app.config.supportedFormats)) {
             statusCode = 202;
             message = "";
-            analyser(URL);
+            imageProcessor.pipe(URL);
         } else {
             message = "Invalid format or format not supported";
         }

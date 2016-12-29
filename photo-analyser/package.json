@@ -1,12 +1,13 @@
 {
-    "name": "photo-analyser",
-    "version": "0.0.1",
-    "description": "Analyse the image information like EXIF, tags and etc.",
-    "dependencies": {
-        "exif": "^0.6.0",
-        "exif-parser": "^0.1.9",
-        "express": "^4.14.0",
-        "http": "0.0.0",
-        "request": "^2.79.0"
-    }
+  "name": "photo-analyser",
+  "version": "0.0.1",
+  "description": "Analyse the image information like EXIF, tags and etc.",
+  "dependencies": {
+    "aws-sdk": "^2.7.19",
+    "exif": "^0.6.0",
+    "exif-parser": "^0.1.9",
+    "express": "^4.14.0",
+    "http": "0.0.0",
+    "request": "^2.79.0"
+  }
 }

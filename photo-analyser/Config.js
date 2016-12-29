@@ -7,6 +7,12 @@ module.exports = {
         URL: "http://52.15.136.66:8983/solr/photo-album/update?commitWithin=1000&overwrite=true&wt=json",
     },
 
-    supportedFormats :  ["jpg","jpeg"]
+    supportedFormats: ["jpg", "jpeg"],
+
+    awsConfig: {
+        bucket: "digital-photoframe-lib",
+        prefix: "exif",
+        configPath: "/appl/config.json"
+    }
 
 }

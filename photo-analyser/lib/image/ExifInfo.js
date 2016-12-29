@@ -1,6 +1,7 @@
-module.exports = ExifInfo => (URL, callback) => {
-    var request = require('request');
-    let ExifImage = require('exif').ExifImage;
+var request = require('request');
+let ExifImage = require('exif').ExifImage;
+
+module.exports =  (URL, callback) => {
     const processExif = (pathOrData) => {
         try {
             new ExifImage({image: pathOrData}, (error, exifData) => {

@@ -1,5 +1,5 @@
 let config = require('../Config').solr;
-module.exports = SolrClient => (imageData) => {
+module.exports = (imageData) => {
     let request = require('request');
 
     let indexData = [];
@@ -26,7 +26,7 @@ module.exports = SolrClient => (imageData) => {
             });
         }
     } catch (error) {
-        console.log(error);
+        console.log('Fetch categories from vision api - ',error);
     }
 
 
@@ -38,7 +38,7 @@ module.exports = SolrClient => (imageData) => {
             });
         }
     } catch (error) {
-        console.log(error);
+        console.log('Fetch tags from vision api - ',error);
     }
 
 
@@ -47,7 +47,7 @@ module.exports = SolrClient => (imageData) => {
             data.gps = imageData.imageInfo.exif.gps;
         }
     } catch (error) {
-        console.log(error);
+        console.log("Fetch GPS info -",error);
     }
 
     let createdTime = data.DateTimeOriginal || `${new Date().getFullYear()}`;

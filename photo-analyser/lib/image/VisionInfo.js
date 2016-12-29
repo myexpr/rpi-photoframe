@@ -1,7 +1,7 @@
 let request = require('request');
-let config = require('../Config').vision;
+let config = require('../../Config').vision;
 
-module.exports = VisionInfo => (URL, callback) => {
+module.exports = (URL, callback) => {
     let options = {
         url: config.URL,
         headers: {
