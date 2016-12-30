@@ -2,12 +2,11 @@
 console.log('Loading receive-email function');
 
 var aws = require('aws-sdk');
-
 var MailParser = require("mailparser").MailParser;
-
 var fs = require("fs");
 var path = require('path');
 var jimp = require('jimp');
+var piexif = require("piexifjs");
 
 exports.handler = (event, context, callback) => {
     const messageId = event.Records[0].ses.mail.messageId;
@@ -81,8 +80,11 @@ function scaleDownContentAndSave(base64FileAttachment) {
 
     console.log('Attachment size: ', attachmentSize);
 
-    if(attachmentSize > 30000) {
+    if(attachmentSize > 4194304) {
         console.log('Attachment size is greater than 4 MB. So scaling down.');
+        
+        let exifStr = getExifData(bitmapFileContent);
+        
         jimp.read(bitmapFileContent, function(err, image) {
             console.log('Scaling down image ');
 
@@ -104,7 +106,10 @@ function scaleDownContentAndSave(base64FileAttachment) {
                 image.write(tempfilepath, function(result) {
                     console.log('Saving result buffer after scaling down the iamge.');
                     fs.readFile(tempfilepath , function(err, data) {
-                        saveContent(base64FileAttachment, data);
+                        var newData = piexif.insert(exifStr, data.toString('binary'));
+                        var newJpeg = new Buffer(newData, "binary");
+                        
+                        saveContent(base64FileAttachment, newJpeg);
                     });
                 });
             });
@@ -114,5 +119,13 @@ function scaleDownContentAndSave(base64FileAttachment) {
         console.log('Saving non - scaled version of image into S3');
         save(base64FileAttachment, bitmapFileContent);
     }
+}
+
+function getExifData(imageData) {
+    console.log('Extracting Exif Data');
+    var pictureData = imageData.toString("binary");
+    var exifObj = piexif.load(pictureData);
+    var exifStr = piexif.dump(exifObj);
+    return exifStr;
 }
 
