@@ -35,7 +35,7 @@ $(document).ready(function () {
                 $("#status").html("No photos found.")
             }
             imageList.forEach(imgURL => {
-                $(`<div class="item"><img src="${imgURL}" width="100%" height="100%"></div>`).appendTo('.carousel-inner');
+                $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
                 $('.item').first().addClass('active');
                 $("#photoframe").carousel();
             });
