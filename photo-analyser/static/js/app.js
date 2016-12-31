@@ -138,13 +138,22 @@ const showOldPhotots = () => {
 let showMixinModel = () => {
     $('#mixin-modal').modal('show');
     $("#word-cloud").html('');
-    getSolrData(`facet.field=tags&facet=on&indent=on&q=*:*`, (data) => {
+    getSolrData(`facet.field=tags&facet.field=photoCreatedYear&facet=on&indent=on&q=*:*`, (data) => {
         let tags = [];
         let solrTags = data.facet_counts.facet_fields.tags;
-
+        let yearCoutns = data.facet_counts.facet_fields.photoCreatedYear;
         for (let i = 0; i < solrTags.length; i = i + 2) {
             tags.push({text: solrTags[i], weight: solrTags[i + 1], link: `javascript:tagClick('${solrTags[i]}')`});
         }
+
+        for (let i = 0; i < yearCoutns.length; i = i + 2) {
+            let year =  yearCoutns[i];
+            if(year == 0){
+                year = "UNKNOWN_YEAR";
+            }
+            tags.push({text: year, weight: yearCoutns[i + 1], link: `javascript:tagClick('${yearCoutns[i]}','year')`});
+        }
+
         setTimeout(() => {
             $("#word-cloud").jQCloud(tags, {autoResize: true, html: {style: 'cursor: pointer'}, handlers: {click: tagClick}});
         }, 1000);
@@ -153,9 +162,15 @@ let showMixinModel = () => {
     });
 };
 
-let tagClick = (tagName) => {
+let tagClick = (tagName,label) => {
     $('#mixin-modal').modal('hide');
-    loadImages(`q=tags:(${tagName})`, (docs) => {
+    let query="";
+    if(label == 'year'){
+        query =  `q=photoCreatedYear:${tagName}`;
+    }else {
+        query= `q=tags:(${tagName})`;
+    }
+    loadImages(query, (docs) => {
         let imgList = [];
         docs.forEach(doc => {
             if (doc.id) {
