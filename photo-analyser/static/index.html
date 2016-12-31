@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/jqcloud.css" />
+    <link rel="stylesheet" type="text/css" href="css/jqcloud.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
 
@@ -14,11 +14,25 @@
     <title>Photo Viewer</title>
 </head>
 <body>
+<div class="fullscreen_options">
+    <a href="#" data-toggle="modal" data-target="#options-modal">
+        <span class="glyphicon glyphicon-th"></span>
+    </a>
+</div>
 <div class="container">
+
     <div id="photoframe" class="carousel slide">
         <div class="carousel-inner" role="listbox" id="listbox">
 
         </div>
+        <a class="left carousel-control" href="#photoframe" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#photoframe" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 
     <div class="status-indicator">

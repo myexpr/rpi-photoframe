@@ -6,19 +6,19 @@ module.exports = (imageData) => {
     let exif = imageData.imageInfo.exif || {};
 
     let data = {
-            id: imageData.path,
-            Make: imageData.imageInfo.image.Make,
-            Model: imageData.imageInfo.image.Model,
-            XResolution: imageData.imageInfo.image.imageInfoXResolution,
-            YResolution: imageData.imageInfo.image.YResolution,
-            DateTimeOriginal: exif.DateTimeOriginal,
-            CreateDate: exif.CreateDate,
-            width: imageData.visionInfo.metadata.width || imageData.imageInfo.exif.ExifImageWidth || 0,
-            height: imageData.visionInfo.metadata.height || imageData.imageInfo.exif.ExifImageHeight || 0,
-            format: imageData.visionInfo.metadata.format,
+        id: imageData.path,
+        Make: imageData.imageInfo.image.Make,
+        Model: imageData.imageInfo.image.Model,
+        XResolution: imageData.imageInfo.image.imageInfoXResolution,
+        YResolution: imageData.imageInfo.image.YResolution,
+        DateTimeOriginal: exif.DateTimeOriginal,
+        CreateDate: exif.CreateDate,
+        width: imageData.visionInfo.metadata.width || imageData.imageInfo.exif.ExifImageWidth || 0,
+        height: imageData.visionInfo.metadata.height || imageData.imageInfo.exif.ExifImageHeight || 0,
+        format: imageData.visionInfo.metadata.format,
     };
 
-   try {
+    try {
         if (imageData.visionInfo.categories.length > 0) {
             data.categories = [];
             imageData.visionInfo.categories.forEach(category => {
@@ -26,7 +26,7 @@ module.exports = (imageData) => {
             });
         }
     } catch (error) {
-        console.log('Fetch categories from vision api - ',error);
+        console.log('Fetch categories from vision api - ', error);
     }
 
 
@@ -38,7 +38,7 @@ module.exports = (imageData) => {
             });
         }
     } catch (error) {
-        console.log('Fetch tags from vision api - ',error);
+        console.log('Fetch tags from vision api - ', error);
     }
 
 
@@ -47,13 +47,20 @@ module.exports = (imageData) => {
             data.gps = imageData.imageInfo.exif.gps;
         }
     } catch (error) {
-        console.log("Fetch GPS info -",error);
+        console.log("Fetch GPS info -", error);
     }
 
     let createdTime = data.DateTimeOriginal || `0`;
-
     data.photoCreatedYear = createdTime.split(':')[0];
-    data.indxedDate = new Date().toISOString()
+
+    if (data.DateTimeOriginal) {
+        data.DateTimeOriginal = new Date(data.DateTimeOriginal.replace(":", "-")).toISOString()
+    }
+
+    if (data.CreateDate) {
+        data.CreateDate = new Date(data.CreateDate.replace(":", "-")).toISOString()
+    }
+    data.indexedDate = new Date().toISOString()
 
     indexData.push(data);
 

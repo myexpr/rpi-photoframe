@@ -13,7 +13,7 @@ body {
 
 .container {
     padding: 0px;
-    padding-left: 5px;
+    /*padding-left: 5px;*/
     margin: 0px;
     width: 100%;
     background-color: darkgray;
@@ -23,6 +23,11 @@ body {
     width: 100%;
     height: 100%;
     object-fit: scale-down;
+}
+
+.carousel-control {
+    width: 10px;
+    opacity: 0.3;
 }
 
 .slider {
@@ -42,7 +47,7 @@ body {
     margin: 15% 25%;
     text-align: center;
     padding: 32px 0px;
-   // background-color: #ffe6ff;
+/ / background-color: #ffe6ff;
 }
 
 .options-bg {
@@ -68,12 +73,20 @@ body {
     margin-left: 5px;
     margin-bottom: 2px;
 }
-#mixin-modal .modal-content{
+
+#mixin-modal .modal-content {
     min-height: 90%;
     max-height: 100%;
 }
 
-#mixin-modal .modal-dialog{
+#mixin-modal .modal-dialog {
     width: 98%;
+}
+
+.fullscreen_options {
+    position: fixed;
+    z-index: 999;
+    padding: 5px;
+    display: none;
 }
 

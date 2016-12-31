@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $("#start").click(() => {
-       // $("#startup").toggle();
+        // $("#startup").toggle();
         defaultPlayQuery();
     });
 
@@ -19,7 +19,6 @@ $(document).ready(function () {
         hideModel();
         showOldPhotots();
     })
-
 });
 
 let imageList = [];
@@ -66,15 +65,16 @@ let loadImages = (query, filter) => {
         $('.item').remove();
         if (imageList.length > 0) {
             statusToggle();
-
             $('#startup').fadeOut();
+            $('.fullscreen_options').fadeIn();
         } else {
+            $('.fullscreen_options').fadeOut();
             $("#status").html("No photos found.")
         }
         imageList.forEach(imgURL => {
             $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
             $('.item').first().addClass('active');
-            $("#photoframe").carousel({ pause: 'none'});
+            $("#photoframe").carousel({pause: 'none'});
         });
     });
 
@@ -106,10 +106,10 @@ let defaultPlayQuery = () => {
 }
 
 
-const showRecentPhotots = ()=>{
+const showRecentPhotots = () => {
     let date = new Date();
-    date.setHours(date.getHours()-2);
-    loadImages(`q=indxedDate:[${date.toISOString()} TO NOW]`, (docs) => {
+    date.setHours(date.getHours() - 2);
+    loadImages(`q=indexedDate:[${date.toISOString()} TO NOW]`, (docs) => {
         let imgList = [];
         docs.forEach(doc => {
             if (doc.id) {
@@ -120,9 +120,9 @@ const showRecentPhotots = ()=>{
     });
 }
 
-const showOldPhotots = ()=>{
+const showOldPhotots = () => {
     let date = new Date();
-    date.setYear(date.getFullYear()-5);
+    date.setYear(date.getFullYear() - 5);
 
     loadImages(`q=DateTimeOriginal:[* TO ${date.toISOString()}]`, (docs) => {
         let imgList = [];
@@ -143,17 +143,17 @@ let showMixinModel = () => {
         let solrTags = data.facet_counts.facet_fields.tags;
 
         for (let i = 0; i < solrTags.length; i = i + 2) {
-            tags.push({text: solrTags[i], weight: solrTags[i + 1],link :`javascript:tagClick('${solrTags[i]}')`});
+            tags.push({text: solrTags[i], weight: solrTags[i + 1], link: `javascript:tagClick('${solrTags[i]}')`});
         }
-        setTimeout(()=>{
-            $("#word-cloud").jQCloud(tags,{autoResize:true,html :{style:'cursor: pointer'},handlers :{click:tagClick}});
-        },1000);
+        setTimeout(() => {
+            $("#word-cloud").jQCloud(tags, {autoResize: true, html: {style: 'cursor: pointer'}, handlers: {click: tagClick}});
+        }, 1000);
 
 
     });
 };
 
-let tagClick = (tagName)=>{
+let tagClick = (tagName) => {
     $('#mixin-modal').modal('hide');
     loadImages(`q=tags:(${tagName})`, (docs) => {
         let imgList = [];
