@@ -74,7 +74,7 @@ let loadImages = (query, filter) => {
         imageList.forEach(imgURL => {
             $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
             $('.item').first().addClass('active');
-            $("#photoframe").carousel();
+            $("#photoframe").carousel({ pause: 'none'});
         });
     });
 
