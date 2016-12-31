@@ -2,11 +2,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/jqcloud.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="css/main.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="app.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/javascript" src="js/jqcloud-1.0.4.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Photo Viewer</title>
 </head>
@@ -19,11 +22,59 @@
     </div>
 
     <div class="status-indicator">
-        <a href="#" id="start">
-            <span class="glyphicon glyphicon-expand"></span>
-        </a>
+        <div id="startup">
+            <a href="#" id="start" class="btn btn-primary btn-lg">
+                <span class="glyphicon glyphicon-expand"></span> Play
+            </a>
+            <a href="#" id="options" class="btn btn-info btn-lg" data-toggle="modal" data-target="#options-modal">
+                <span class="glyphicon glyphicon-th"></span> Options
+            </a>
+        </div>
         <span id="status"></span>
+
     </div>
 </div>
+
+<div id="options-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="options-content">
+
+                    <div class="options-data">
+                        <a href="#" class="btn btn-danger btn-lg"> Nostalgia </a>
+                        <a href="#" id="mixin" class="btn btn-success btn-lg">Mixin</a>
+                    </div>
+                    <div class="options-data">
+                        <a href="#" class="btn btn-primary btn-lg">Recent</a>
+                        <a href="#" class="btn btn-primary btn-lg">Stats</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div id="mixin-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div id="word-cloud" style="width: 100%; height: 80%;"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>
