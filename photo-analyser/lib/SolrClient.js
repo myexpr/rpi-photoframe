@@ -53,6 +53,7 @@ module.exports = (imageData) => {
     let createdTime = data.DateTimeOriginal || `0`;
 
     data.photoCreatedYear = createdTime.split(':')[0];
+    data.indxedDate = new Date().toISOString()
 
     indexData.push(data);
 
