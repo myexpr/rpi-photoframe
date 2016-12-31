@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     $("#start").click(() => {
-        fullScreen();
        // $("#startup").toggle();
         defaultPlayQuery();
     });
@@ -9,7 +8,18 @@ $(document).ready(function () {
     $("#mixin").click(() => {
         hideModel();
         showMixinModel();
+    });
+
+    $("#recent").click(() => {
+        hideModel();
+        showRecentPhotots();
+    });
+
+    $("#oldphotos").click(() => {
+        hideModel();
+        showOldPhotots();
     })
+
 });
 
 let imageList = [];
@@ -44,6 +54,7 @@ let getSolrData = (query, successCallback, errCalBack, alwaysCallBack) => {
 }
 
 let loadImages = (query, filter) => {
+    fullScreen();
     statusToggle();
     $("#status").html("Loading...");
     imageList = [];
@@ -55,6 +66,7 @@ let loadImages = (query, filter) => {
         $('.item').remove();
         if (imageList.length > 0) {
             statusToggle();
+
             $('#startup').fadeOut();
         } else {
             $("#status").html("No photos found.")
@@ -94,6 +106,34 @@ let defaultPlayQuery = () => {
 }
 
 
+const showRecentPhotots = ()=>{
+    let date = new Date();
+    date.setHours(date.getHours()-2);
+    loadImages(`q=indxedDate:[${date.toISOString()} TO NOW]`, (docs) => {
+        let imgList = [];
+        docs.forEach(doc => {
+            if (doc.id) {
+                imgList.push(doc.id);
+            }
+        });
+        return imgList;
+    });
+}
+
+const showOldPhotots = ()=>{
+    let date = new Date();
+    date.setYear(date.getFullYear()-3);
+
+    loadImages(`q=DateTimeOriginal:[* TO ${date.toISOString()}]`, (docs) => {
+        let imgList = [];
+        docs.forEach(doc => {
+            if (doc.id) {
+                imgList.push(doc.id);
+            }
+        });
+        return imgList;
+    });
+}
 
 let showMixinModel = () => {
     $('#mixin-modal').modal('show');
