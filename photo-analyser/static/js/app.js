@@ -22,6 +22,7 @@ $(document).ready(function () {
 });
 
 let imageList = [];
+let mixinSelection = {tag:{},year:{}};
 
 let fullScreen = () => {
     var el = document.documentElement,
@@ -54,7 +55,8 @@ let getSolrData = (query, successCallback, errCalBack, alwaysCallBack) => {
 
 let loadImages = (query, filter) => {
     fullScreen();
-    statusToggle();
+    $('.fullscreen_options').fadeIn();
+    $("#status").fadeIn();
     $("#status").html("Loading...");
     imageList = [];
     getSolrData(query, (data) => {
@@ -64,13 +66,12 @@ let loadImages = (query, filter) => {
     }, () => {
         $('.item').remove();
         if (imageList.length > 0) {
-            statusToggle();
             $('#startup').fadeOut();
-            $('.fullscreen_options').fadeIn();
+            $("#status").fadeOut();
         } else {
-            $('.fullscreen_options').fadeOut();
             $("#status").html("No photos found.")
         }
+
         imageList.forEach(imgURL => {
             $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
             $('.item').first().addClass('active');
@@ -138,6 +139,15 @@ const showOldPhotots = () => {
 let showMixinModel = () => {
     $('#mixin-modal').modal('show');
     $("#word-cloud").html('');
+    if(mixinSelection.tag.id){
+        $(`#${mixinSelection.tag.id}`).removeClass("mixin-selected");
+    }
+    if(mixinSelection.year.id){
+        $(`#${mixinSelection.year.id}`).removeClass("mixin-selected");
+    }
+    mixinSelection = {tag:{},year:{}};
+
+
     getSolrData(`facet.field=tags&facet.field=photoCreatedYear&facet=on&indent=on&q=*:*`, (data) => {
         let tags = [];
         let solrTags = data.facet_counts.facet_fields.tags;
@@ -147,36 +157,59 @@ let showMixinModel = () => {
         }
 
         for (let i = 0; i < yearCoutns.length; i = i + 2) {
-            let year =  yearCoutns[i];
-            if(year == 0){
+            let year = yearCoutns[i];
+            if (year == 0) {
                 year = "UNKNOWN_YEAR";
             }
             tags.push({text: year, weight: yearCoutns[i + 1], link: `javascript:tagClick('${yearCoutns[i]}','year')`});
         }
 
         setTimeout(() => {
-            $("#word-cloud").jQCloud(tags, {autoResize: true, html: {style: 'cursor: pointer'}, handlers: {click: tagClick}});
+            $("#word-cloud").jQCloud(tags,{html:{"class":"test"}});
         }, 1000);
 
 
     });
 };
 
-let tagClick = (tagName,label) => {
-    $('#mixin-modal').modal('hide');
-    let query="";
-    if(label == 'year'){
-        query =  `q=photoCreatedYear:${tagName}`;
-    }else {
-        query= `q=tags:(${tagName})`;
+let tagClick = (tagName, label) => {
+    let id;
+    let presentSelectedId = $(`a:contains("${tagName}"):last`).parent().attr("id");
+    if (label) {
+        id= mixinSelection.year.id;
+        mixinSelection.year.id = presentSelectedId;
+        mixinSelection.year.value = tagName;
+
+    } else {
+        id= mixinSelection.tag.id;
+        mixinSelection.tag.id = presentSelectedId;
+        mixinSelection.tag.value = tagName;
     }
-    loadImages(query, (docs) => {
-        let imgList = [];
-        docs.forEach(doc => {
-            if (doc.id) {
-                imgList.push(doc.id);
-            }
+
+    if (mixinSelection.year.value && mixinSelection.tag.value) {
+        $('#mixin-modal').modal('hide');
+        let query = "";
+       /* if (label == 'year') {
+            query = `q=photoCreatedYear:${tagName}`;
+        } else {
+            query = `q=tags:(${tagName})`;
+        }*/
+        query = `q=photoCreatedYear:${mixinSelection.year.value} AND tags:${mixinSelection.tag.value}`;
+        loadImages(query, (docs) => {
+            let imgList = [];
+            docs.forEach(doc => {
+                if (doc.id) {
+                    imgList.push(doc.id);
+                }
+            });
+            return imgList;
         });
-        return imgList;
-    });
+    }else {
+        if(id){
+            $(`#${id}`).removeClass("mixin-selected");
+        }
+
+        $(`#${presentSelectedId}`).addClass("mixin-selected");
+    }
+
 }

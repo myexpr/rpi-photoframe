@@ -26,8 +26,12 @@ body {
 }
 
 .carousel-control {
-    width: 10px;
+    width: 5%;
     opacity: 0.3;
+}
+
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
+    font-size: 15px;
 }
 
 .slider {
@@ -81,6 +85,10 @@ body {
 
 #mixin-modal .modal-dialog {
     width: 98%;
+}
+
+.mixin-selected {
+    border: solid 2px #f49542;
 }
 
 .fullscreen_options {
