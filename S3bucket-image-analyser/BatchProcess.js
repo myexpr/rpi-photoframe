@@ -5,6 +5,7 @@ const request = require('request');
 const configPath = config.configPath;
 const bucketName = config.bucket;
 const prefix = config.prefix;
+const timeout = config.timeout;
 
 AWS.config.loadFromPath(configPath);
 let s3 = new AWS.S3();
@@ -14,7 +15,7 @@ s3.listObjects(bucketParams, (err, data) => {
     let bucketContents = data.Contents || [];
     bucketContents.forEach(content => {
         const URL = `${s3.endpoint.href}${bucketName}/${content.Key}`;
-        console.log(URL);
+
         if (!URL.endsWith("/")) {
 
             let options = {
@@ -24,12 +25,15 @@ s3.listObjects(bucketParams, (err, data) => {
                 },
                 method: "POST"
             };
-            request(options, (error, response, body) => {
-                if (error) {
-                    console.log(error);
-                }
+            setTimeout(()=>{
+                console.log(URL);
+                request(options, (error, response, body) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                });
+            },timeout);
 
-            });
         }
     });
 
