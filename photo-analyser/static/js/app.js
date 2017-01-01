@@ -23,6 +23,7 @@ $(document).ready(function () {
 
 let imageList = [];
 let mixinSelection = {tag:{},year:{}};
+let isFullScreen = false;
 
 let fullScreen = () => {
     var el = document.documentElement,
@@ -54,29 +55,38 @@ let getSolrData = (query, successCallback, errCalBack, alwaysCallBack) => {
 }
 
 let loadImages = (query, filter) => {
-    fullScreen();
-    $('.fullscreen_options').fadeIn();
+    if(!isFullScreen){
+        fullScreen();
+        $('.fullscreen_options').fadeIn();
+        $('#startup').fadeOut();
+        isFullScreen = true;
+    }
+
     $("#status").fadeIn();
     $("#status").html("Loading...");
     imageList = [];
+
     getSolrData(query, (data) => {
         addImages(data.response.docs, filter)
     }, () => {
         $("#status").html("Error while fetching data.")
     }, () => {
-        $('.item').remove();
-        if (imageList.length > 0) {
-            $('#startup').fadeOut();
-            $("#status").fadeOut();
-        } else {
-            $("#status").html("No photos found.")
+        if( $('.item').length){
+            $('.item').remove();
         }
-
         imageList.forEach(imgURL => {
             $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
         });
+        if (imageList.length > 0) {
+            $("#status").fadeOut();
+        } else {
+            $("#status").html("No photos found.")
+            $(`<div class="item"><img src=""></div>`).appendTo('.carousel-inner');
+
+        }
         $('.item').first().addClass('active');
         $("#photoframe").carousel({pause: 'none'});
+
     });
 
 
