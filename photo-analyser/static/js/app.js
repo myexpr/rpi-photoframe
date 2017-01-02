@@ -169,7 +169,10 @@ let showMixinModel = () => {
         let solrTags = data.facet_counts.facet_fields.tags;
         let yearCoutns = data.facet_counts.facet_fields.photoCreatedYear;
         for (let i = 0; i < solrTags.length; i = i + 2) {
-            tags.push({text: solrTags[i], weight: solrTags[i + 1], link: `javascript:tagClick('${solrTags[i]}')`});
+            let tagCount = solrTags[i + 1];
+            if(tagCount>4) {
+                tags.push({text: solrTags[i], weight: solrTags[i + 1], link: `javascript:tagClick('${solrTags[i]}')`});
+            }
         }
 
         for (let i = 0; i < yearCoutns.length; i = i + 2) {
