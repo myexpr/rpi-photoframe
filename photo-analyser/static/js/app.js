@@ -22,6 +22,7 @@ $(document).ready(function () {
 });
 
 let imageList = [];
+let indexedDocs ={};
 let mixinSelection = {tag:{},year:{}};
 let isFullScreen = false;
 
@@ -40,7 +41,7 @@ let statusToggle = () => {
 }
 
 let getSolrData = (query, successCallback, errCalBack, alwaysCallBack) => {
-    $.getJSON(`http://52.15.136.66:8983/solr/photo-album/select?${query}&indent=on&q=*:*&wt=json`, (data) => {
+    $.getJSON(`http://52.15.136.66:8983/solr/photo-album-4/select?${query}&indent=on&q=*:*&wt=json&sort=DateTimeOriginal asc&rows=50`, (data) => {
         successCallback(data);
     }).fail(() => {
         if (errCalBack) {
@@ -67,7 +68,10 @@ let loadImages = (query, filter) => {
     imageList = [];
 
     getSolrData(query, (data) => {
-        addImages(data.response.docs, filter)
+        addImages(data.response.docs, filter);
+        data.response.docs.forEach(doc =>{
+            indexedDocs[doc.id] = doc;
+        });
     }, () => {
         $("#status").html("Error while fetching data.")
     }, () => {
@@ -75,7 +79,9 @@ let loadImages = (query, filter) => {
             $('.item').remove();
         }
         imageList.forEach(imgURL => {
-            $(`<div class="item"><img src="${imgURL}"></div>`).appendTo('.carousel-inner');
+            let actualTags = indexedDocs[imgURL].tags ||[];
+            const joinedTags = '#'+actualTags.join(" #");
+            $(`<div class="item"><img src="${imgURL}"><div class="carousel-caption"><h3>${joinedTags}</h3></div></div>`).appendTo('.carousel-inner');
         });
         if (imageList.length > 0) {
             $("#status").fadeOut();
@@ -183,7 +189,7 @@ let showMixinModel = () => {
 };
 
 let tagClick = (tagName, label) => {
-    let id;
+   /* let id;
     let presentSelectedId = $(`a:contains("${tagName}"):last`).parent().attr("id");
     if (label) {
         id= mixinSelection.year.id;
@@ -194,17 +200,17 @@ let tagClick = (tagName, label) => {
         id= mixinSelection.tag.id;
         mixinSelection.tag.id = presentSelectedId;
         mixinSelection.tag.value = tagName;
-    }
+    }*/
 
-    if (mixinSelection.year.value && mixinSelection.tag.value) {
+  //  if (mixinSelection.year.value && mixinSelection.tag.value) {
         $('#mixin-modal').modal('hide');
         let query = "";
-       /* if (label == 'year') {
+       if (label == 'year') {
             query = `q=photoCreatedYear:${tagName}`;
         } else {
             query = `q=tags:(${tagName})`;
-        }*/
-        query = `q=photoCreatedYear:${mixinSelection.year.value} AND tags:${mixinSelection.tag.value}`;
+        }
+        //query = `q=${query}`;
         loadImages(query, (docs) => {
             let imgList = [];
             docs.forEach(doc => {
@@ -214,12 +220,12 @@ let tagClick = (tagName, label) => {
             });
             return imgList;
         });
-    }else {
+    /*}else {
         if(id){
             $(`#${id}`).removeClass("mixin-selected");
         }
 
         $(`#${presentSelectedId}`).addClass("mixin-selected");
-    }
+    }*/
 
 }
