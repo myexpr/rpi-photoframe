@@ -16,6 +16,7 @@ app.post('/analyse', (req, res) => {
             imageProcessor.pipe(URL);
         } else {
             message = "Invalid format or format not supported";
+            console.log(message,URL);
         }
     }
 
@@ -31,7 +32,7 @@ app.listen(port);
 const isSupportedFileTye = (url, supportedFormats) => {
     let index = url.lastIndexOf(".");
     if (index != -1) {
-        return supportedFormats.indexOf(url.substring(index + 1)) != -1;
+        return supportedFormats.indexOf(url.toLowerCase().substring(index + 1)) != -1;
     } else {
         return false;
     }

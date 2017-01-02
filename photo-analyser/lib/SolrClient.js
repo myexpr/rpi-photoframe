@@ -26,7 +26,7 @@ module.exports = (imageData) => {
             });
         }
     } catch (error) {
-        console.log('Fetch categories from vision api - ', error);
+       // console.log('Fetch categories from vision api - ', error);
     }
 
 
@@ -38,7 +38,7 @@ module.exports = (imageData) => {
             });
         }
     } catch (error) {
-        console.log('Fetch tags from vision api - ', error);
+        //console.log('Fetch tags from vision api - ', error);
     }
 
 
@@ -47,7 +47,7 @@ module.exports = (imageData) => {
             data.gps = imageData.imageInfo.exif.gps;
         }
     } catch (error) {
-        console.log("Fetch GPS info -", error);
+        //console.log("Fetch GPS info -", error);
     }
 
     let createdTime = data.DateTimeOriginal || `0`;

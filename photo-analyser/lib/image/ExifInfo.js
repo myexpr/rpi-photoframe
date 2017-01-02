@@ -30,9 +30,18 @@ module.exports =  (URL, callback) => {
     try {
 
         if (URL.toLowerCase().indexOf("http") == 0) {
-            request(URL, {encoding: 'binary'}, (error, response, body) => {
-                processExif(new Buffer(body, "binary"));
-            });
+            try {
+                request(URL, {encoding: 'binary'}, (error, response, body) => {
+                    try{
+                        processExif(new Buffer(body, "binary"));
+                    }catch (error){
+                        console.log(`${URL} - ${error}`);
+                    }
+
+                });
+            }catch (error){
+                console.log(`${URL} - ${error}`);
+            }
         } else {
             processExif(URL);
         }
