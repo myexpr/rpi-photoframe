@@ -17,6 +17,18 @@ Holds the batch script to list all the images from S3 bucket and index the EXIF 
 
 #photo-analyser#
 Holds the scripts to get the EXIF information and connect with Vision API. This folder also contains the HTML to view the images in brower.
+##Install##
+execute `npm install` from `photo-analyser`
+
+##Run##
+'photo-analyser' can run in two modes, API or IOT subscribe mode.
+
+####API mode####
+use `node server.js <port number>`
+<p>port number is optional. By default server runs on port 9000</p>
+
+####IOT mode####
+use `npm start`
 
 ##Brower URL##
 http://hostname:port/index.html
