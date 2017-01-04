@@ -1,0 +1,16 @@
+{
+  "name": "Photoframe",
+  "version": "0.0.1",
+  "scripts": {
+    "start" : "node index.js --host-name=a23k7by440p0ss.iot.us-east-2.amazonaws.com --private-key=./cert/photoframe.private.key --client-certificate=./cert/photoframe.cert.pem --ca-certificate=./cert/root-CA.crt "
+  },
+  "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
+    "aws-sdk": "^2.7.19",
+    "exif": "^0.6.0",
+    "exif-parser": "^0.1.9",
+    "http": "0.0.0",
+    "request": "^2.79.0"
+  }
+
+}
