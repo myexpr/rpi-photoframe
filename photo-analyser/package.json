@@ -2,7 +2,11 @@
   "name": "photo-analyser",
   "version": "0.0.1",
   "description": "Analyse the image information like EXIF, tags and etc.",
+  "scripts": {
+    "start" : "node index.js --host-name=a23k7by440p0ss.iot.us-east-2.amazonaws.com --private-key=./cert/photoframe.private.key --client-certificate=./cert/photoframe.cert.pem --ca-certificate=./cert/root-CA.crt "
+  },
   "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
     "aws-sdk": "^2.7.19",
     "exif": "^0.6.0",
     "exif-parser": "^0.1.9",
